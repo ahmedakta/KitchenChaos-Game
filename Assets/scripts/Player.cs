@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+   //  [SerializeField] to make it  editable fields on unity UI
+    [SerializeField] private float moveSpeed = 7f;
+   private bool isWalking;
     // Update is called once per frame
     private void Update()
     {
@@ -25,15 +28,24 @@ public class Player : MonoBehaviour
         inputVector = inputVector.normalized;
 
         Vector3 moveDir = new Vector3(inputVector.x , 0 , inputVector.y);
-        transform.position += moveDir;
+        transform.position += moveDir * moveSpeed * Time.deltaTime;
+        isWalking = moveDir != Vector3.zero;
+         // player rotation , info : rotion / eulerAngles = eagles from 0 to 360
+        float rotateSpeed = 10f;
+         //   slerp is math funtion for smooth rotaion
+        transform.forward = Vector3.Slerp(transform.forward , moveDir , Time.deltaTime * rotateSpeed);
 
-        Debug.Log(inputVector);
+        Debug.Log(Time.deltaTime);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public bool IsWalking(){
+      return isWalking;
     }
+
+   //  // Start is called before the first frame update
+   //  void Start()
+   //  {
+
+   //  }
 
 }
