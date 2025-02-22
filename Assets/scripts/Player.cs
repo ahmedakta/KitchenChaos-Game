@@ -6,27 +6,14 @@ public class Player : MonoBehaviour
 {
    //  [SerializeField] to make it  editable fields on unity UI
     [SerializeField] private float moveSpeed = 7f;
-   private bool isWalking;
+    [SerializeField] private GameInput gameInput;
+    private bool isWalking;
+
     // Update is called once per frame
     private void Update()
     {
-        Vector2 inputVector = new Vector2(0,0);
-        if(Input.GetKey(KeyCode.W)){
-           inputVector.y = +1;
-        }
-        if(Input.GetKey(KeyCode.S)){
-           inputVector.y = -1;
-        }
-        if(Input.GetKey(KeyCode.A)){
-           inputVector.x = -1;
-        }
-        if(Input.GetKey(KeyCode.D)){
-           inputVector.x = +1;
-        }
-
-        // normalize or player, solved the issue when click on A and D player will go faster , so we solved this by normalizing the vecotor.
-        inputVector = inputVector.normalized;
-
+        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+ 
         Vector3 moveDir = new Vector3(inputVector.x , 0 , inputVector.y);
         transform.position += moveDir * moveSpeed * Time.deltaTime;
         isWalking = moveDir != Vector3.zero;
@@ -41,11 +28,4 @@ public class Player : MonoBehaviour
     public bool IsWalking(){
       return isWalking;
     }
-
-   //  // Start is called before the first frame update
-   //  void Start()
-   //  {
-
-   //  }
-
 }
